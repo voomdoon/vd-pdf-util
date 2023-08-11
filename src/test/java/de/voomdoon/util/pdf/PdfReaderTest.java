@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import de.voomdoon.testing.tests.TestBase;
@@ -27,7 +28,8 @@ public class PdfReaderTest {
 	 *
 	 * @since 0.1.0
 	 */
-	static class PdfReader_File_Test extends TestBase {
+	@Nested
+	class PdfReader_File_Test extends TestBase {
 
 		/**
 		 * @throws Exception
@@ -53,7 +55,8 @@ public class PdfReaderTest {
 	 *
 	 * @since 0.1.0
 	 */
-	static class ReadTextTest extends TestBase {
+	@Nested
+	class ReadTextTest extends TestBase {
 
 		/**
 		 * @throws Exception
