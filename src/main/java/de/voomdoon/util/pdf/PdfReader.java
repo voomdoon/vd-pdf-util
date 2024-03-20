@@ -54,6 +54,14 @@ public class PdfReader {
 	}
 
 	/**
+	 * @return document
+	 * @since 0.1.0
+	 */
+	public PDDocument getDocument() {
+		return document;
+	}
+
+	/**
 	 * DOCME add JavaDoc for method readText
 	 * 
 	 * @param page
