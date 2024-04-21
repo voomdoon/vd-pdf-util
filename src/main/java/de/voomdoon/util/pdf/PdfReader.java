@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
 /**
@@ -64,30 +65,48 @@ public class PdfReader {
 	/**
 	 * DOCME add JavaDoc for method readText
 	 * 
-	 * @param page
+	 * @param pageIndex
+	 *            (first: 0)
 	 * @param rectangle
+	 *            (y=0: bottom)
 	 * @return {@link String}
 	 * @since 0.1.0
 	 */
-	public String readText(int page, Rectangle rectangle) {
-		PDPage p = document.getDocumentCatalog().getPages().get(page);
+	public String readText(int pageIndex, Rectangle rectangle) {
+		// TODO concurrency
+		PDPage page = document.getDocumentCatalog().getPages().get(pageIndex);
 
-		stripper.addRegion("current", new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height));
+		String dummyName = "current";
+		stripper.addRegion(dummyName, convert(rectangle, page));
 
 		try {
-			stripper.extractRegions(p);
+			stripper.extractRegions(page);
 		} catch (IOException e) {
 			// TODO implement error handling
-			throw new RuntimeException("Error at 'readText': " + e.getMessage(), e);
+			throw new RuntimeException("Error at 'extractRegions': " + e.getMessage(), e);
 		}
 
-		String result = stripper.getTextForRegion("current");
+		String result = stripper.getTextForRegion(dummyName);
 
 		if (result.endsWith("\r\n")) {
 			result = result.substring(0, result.length() - 2);
 		}
 
-		// TODO implement readText
 		return result.trim();// TESTME trim
+	}
+
+	/**
+	 * DOCME add JavaDoc for method convert
+	 * 
+	 * @param rectangle
+	 * @param p
+	 * @return
+	 * @since 0.1.0
+	 */
+	private Rectangle convert(Rectangle rectangle, PDPage p) {
+		PDRectangle mediaBox = p.getMediaBox();
+
+		return new Rectangle(rectangle.x, (int) mediaBox.getHeight() - rectangle.y - rectangle.height, rectangle.width,
+				rectangle.height);
 	}
 }
