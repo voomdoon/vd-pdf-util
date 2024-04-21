@@ -10,6 +10,11 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
+import de.voomdoon.logging.LogManager;
+import de.voomdoon.logging.Logger;
+
+//OPTIMIZE speed: remove regions from stripper
+
 /**
  * DOCME add JavaDoc for
  *
@@ -23,6 +28,11 @@ public class PdfReader {
 	 * @since 0.1.0
 	 */
 	private PDDocument document;
+
+	/**
+	 * @since 0.1.0
+	 */
+	private final Logger logger = LogManager.getLogger(getClass());
 
 	/**
 	 * @since 0.1.0
@@ -73,6 +83,8 @@ public class PdfReader {
 	 * @since 0.1.0
 	 */
 	public String readText(int pageIndex, Rectangle rectangle) {
+		// logger.trace("readText " + pageIndex + " " + rectangle);
+
 		// TODO concurrency
 		PDPage page = document.getDocumentCatalog().getPages().get(pageIndex);
 
@@ -86,11 +98,7 @@ public class PdfReader {
 			throw new RuntimeException("Error at 'extractRegions': " + e.getMessage(), e);
 		}
 
-		String result = stripper.getTextForRegion(dummyName);
-
-		if (result.endsWith("\r\n")) {
-			result = result.substring(0, result.length() - 2);
-		}
+		String result = getTextForRegion(dummyName);
 
 		return result.trim();// TESTME trim
 	}
@@ -108,5 +116,21 @@ public class PdfReader {
 
 		return new Rectangle(rectangle.x, (int) mediaBox.getHeight() - rectangle.y - rectangle.height, rectangle.width,
 				rectangle.height);
+	}
+
+	/**
+	 * DOCME add JavaDoc for method getTextForRegion
+	 * 
+	 * @param dummyName
+	 * @return
+	 * @since 0.1.0
+	 */
+	private String getTextForRegion(String dummyName) {
+		String result = stripper.getTextForRegion(dummyName);
+
+		if (result.endsWith("\r\n")) {
+			result = result.substring(0, result.length() - 2);
+		}
+		return result;
 	}
 }
