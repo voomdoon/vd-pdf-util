@@ -10,9 +10,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 
-import de.voomdoon.logging.LogManager;
-import de.voomdoon.logging.Logger;
-
 //OPTIMIZE speed: remove regions from stripper
 
 /**
@@ -28,11 +25,6 @@ public class PdfReader {
 	 * @since 0.1.0
 	 */
 	private PDDocument document;
-
-	/**
-	 * @since 0.1.0
-	 */
-	private final Logger logger = LogManager.getLogger(getClass());
 
 	/**
 	 * @since 0.1.0
