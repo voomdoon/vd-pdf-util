@@ -48,7 +48,7 @@ public class PdfReaderTest {
 	}
 
 	/**
-	 * Test class for {@link PdfReader#readText(int, Rectangle)}.
+	 * Tests for {@link PdfReader#readText(int, Rectangle)}.
 	 *
 	 * @author André Schulz
 	 *
