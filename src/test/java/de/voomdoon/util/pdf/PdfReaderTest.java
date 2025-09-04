@@ -11,7 +11,10 @@ import java.io.IOException;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import de.voomdoon.testing.file.TempFileExtension;
+import de.voomdoon.testing.file.TempInputFile;
 import de.voomdoon.testing.tests.TestBase;
 import de.voomdoon.util.io.IOStreamUtil;
 
@@ -22,6 +25,7 @@ import de.voomdoon.util.io.IOStreamUtil;
  *
  * @since 0.1.0
  */
+@ExtendWith(TempFileExtension.class)
 public class PdfReaderTest {
 
 	/**
@@ -39,10 +43,11 @@ public class PdfReaderTest {
 		 * @since 0.1.0
 		 */
 		@Test
-		void test() throws Exception {
+		void test(@TempInputFile File inputFile) throws Exception {
 			logTestStart();
 
-			PdfReader actual = getReader();
+			PdfReader actual = getReader(inputFile);
+
 			assertThat(actual).isNotNull();
 		}
 	}
@@ -62,14 +67,15 @@ public class PdfReaderTest {
 		 * @since 0.1.0
 		 */
 		@Test
-		void test() throws Exception {
+		void test(@TempInputFile File inputFile) throws Exception {
 			logTestStart();
 
-			PdfReader reader = getReader();
+			PdfReader reader = getReader(inputFile);
 			PDRectangle mediaBox = reader.getDocument().getPages().get(0).getMediaBox();
 
 			String actual = reader.readText(0,
 					new Rectangle(0, 0, (int) mediaBox.getWidth(), (int) mediaBox.getHeight()));
+
 			assertThat(actual).contains("Lorem ipsum dolor sit amet").contains("commodo at,");
 		}
 
@@ -77,13 +83,14 @@ public class PdfReaderTest {
 		 * @since 0.1.0
 		 */
 		@Test
-		void test_y_bottomToTop() throws Exception {
+		void test_y_bottomToTop(@TempInputFile File inputFile) throws Exception {
 			logTestStart();
 
-			PdfReader reader = getReader();
+			PdfReader reader = getReader(inputFile);
 			PDRectangle mediaBox = reader.getDocument().getPages().get(0).getMediaBox();
 
 			String actual = reader.readText(0, new Rectangle(0, 0, (int) mediaBox.getWidth(), 200));
+
 			assertThat(actual).contains("eget dui. Phasellus congue").doesNotContain("Lorem ipsum dolor");
 		}
 	}
@@ -105,12 +112,11 @@ public class PdfReaderTest {
 		 * @throws FileNotFoundException
 		 * @since 0.1.0
 		 */
-		protected PdfReader getReader() throws IOException, FileNotFoundException {
-			File input = new File(getTempDirectory() + "/input.pdf");
+		protected PdfReader getReader(File inputFile) throws IOException, FileNotFoundException {
+			IOStreamUtil.copy(IOStreamUtil.getInputStream("sample.pdf"), new FileOutputStream(inputFile));
 
-			IOStreamUtil.copy(IOStreamUtil.getInputStream("sample.pdf"), new FileOutputStream(input));
+			PdfReader reader = new PdfReader(inputFile);
 
-			PdfReader reader = new PdfReader(input);
 			return reader;
 		}
 	}
