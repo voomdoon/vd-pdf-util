@@ -113,7 +113,7 @@ public class PdfReaderTest {
 		 * @since 0.1.0
 		 */
 		protected PdfReader getReader(File inputFile) throws IOException, FileNotFoundException {
-			IOStreamUtil.copy(IOStreamUtil.getInputStream("sample.pdf"), new FileOutputStream(inputFile));
+			IOStreamUtil.copyAndClose(IOStreamUtil.getInputStream("sample.pdf"), new FileOutputStream(inputFile));
 
 			PdfReader reader = new PdfReader(inputFile);
 
