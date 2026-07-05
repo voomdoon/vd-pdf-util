@@ -34,11 +34,13 @@ public class PdfGraphics implements Closeable {
 	private static final boolean RESET_CONTEXT_NO = false;
 
 	/**
-	 * DOCME add JavaDoc for method create
+	 * Creates graphics for appending content to a PDF page.
 	 * 
 	 * @param document
+	 *            {@link PDDocument}
 	 * @param page
-	 * @return
+	 *            {@link PDPage}
+	 * @return {@link PdfGraphics}
 	 * @since 0.1.0
 	 */
 	public static PdfGraphics create(PDDocument document, PDPage page) {
@@ -60,9 +62,10 @@ public class PdfGraphics implements Closeable {
 	private PDPageContentStream stream;
 
 	/**
-	 * DOCME add JavaDoc for constructor PdfDrawer
+	 * Creates PDF graphics backed by the supplied content stream.
 	 * 
 	 * @param stream
+	 *            {@link PDPageContentStream}
 	 * @since 0.1.0
 	 */
 	public PdfGraphics(PDPageContentStream stream) {
@@ -85,12 +88,16 @@ public class PdfGraphics implements Closeable {
 	}
 
 	/**
-	 * DOCME add JavaDoc for method drawLine
+	 * Draws a line between two points.
 	 * 
 	 * @param x0
+	 *            starting x-coordinate
 	 * @param y0
+	 *            starting y-coordinate
 	 * @param x1
+	 *            ending x-coordinate
 	 * @param y1
+	 *            ending y-coordinate
 	 * @since 0.1.0
 	 */
 	public void drawLine(float x0, float y0, float x1, float y1) {
@@ -105,9 +112,10 @@ public class PdfGraphics implements Closeable {
 	}
 
 	/**
-	 * DOCME add JavaDoc for method drawRectangle
+	 * Draws a rectangle.
 	 * 
 	 * @param rectangle
+	 *            {@link Rectangle}
 	 * @since 0.1.0
 	 */
 	public void drawRectangle(Rectangle rectangle) {
@@ -120,9 +128,10 @@ public class PdfGraphics implements Closeable {
 	}
 
 	/**
-	 * DOCME add JavaDoc for method setAlpha
+	 * Sets the stroking alpha value.
 	 * 
 	 * @param alpha
+	 *            alpha value
 	 * @since 0.1.0
 	 */
 	public void setAlpha(float alpha) {
@@ -132,9 +141,10 @@ public class PdfGraphics implements Closeable {
 	}
 
 	/**
-	 * DOCME add JavaDoc for method setGraphicsStateParameters
+	 * Applies extended graphics state parameters.
 	 * 
 	 * @param graphicsState
+	 *            {@link PDExtendedGraphicsState}
 	 * @since 0.1.0
 	 */
 	public void setGraphicsStateParameters(PDExtendedGraphicsState graphicsState) {
@@ -147,7 +157,10 @@ public class PdfGraphics implements Closeable {
 	}
 
 	/**
+	 * Sets the stroking color.
+	 *
 	 * @param color
+	 *            {@link Color}
 	 * @since 0.1.0
 	 */
 	public void setStrokingColor(Color color) {

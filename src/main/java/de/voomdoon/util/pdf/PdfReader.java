@@ -57,7 +57,9 @@ public class PdfReader {
 	}
 
 	/**
-	 * @return document
+	 * Returns the underlying PDF document.
+	 *
+	 * @return {@link PDDocument}
 	 * @since 0.1.0
 	 */
 	public PDDocument getDocument() {
